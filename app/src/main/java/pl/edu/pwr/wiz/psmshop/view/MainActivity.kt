@@ -1,8 +1,11 @@
 package pl.edu.pwr.wiz.psmshop.view
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
+import android.transition.Transition
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -17,8 +20,6 @@ class MainActivity : BaseMVPActivity(), MainView {
     override fun getLayoutRes(): Int = R.layout.activity_main
 
     val presenter: MainPresenter by lazy { MainPresenter() }
-
-    private var transitionView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +43,44 @@ class MainActivity : BaseMVPActivity(), MainView {
                 layoutParams = params
                 setCarouselTitle(t)
                 setCarouselItems(u)
-                setCarouselItemClickListener { id, view ->
-                    transitionView = view
-                    presenter.onCarouselItemClick(id)
+                setCarouselItemClickListener { id, view, animator ->
+                    showDetails(id, view, animator)
                 }
             }
         }
     }
 
-    override fun showDetails(id: Int) {
-        val intent = Intent(this, DetailsActivity::class.java).putExtra(ITEM_ID_KEY, id).putExtra("transitionName", transitionView?.transitionName)
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, transitionView, transitionView?.transitionName)
-        transitionView = null
-        startActivity(intent, options.toBundle())
+    fun showDetails(id: Int, view: View, animator: Animator?) {
+        val intent = Intent(this, DetailsActivity::class.java).putExtra(ITEM_ID_KEY, id).putExtra("transitionName", view.transitionName)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, view.transitionName)
+        animator?.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) = Unit
+
+            override fun onAnimationCancel(animation: Animator?) = Unit
+
+            override fun onAnimationStart(animation: Animator?) = Unit
+
+            override fun onAnimationEnd(animation: Animator?) {
+                startActivity(intent, options.toBundle())
+                animation?.removeListener(this)
+            }
+        })
+        animator?.start()
+        window.sharedElementReenterTransition = window.sharedElementReenterTransition.clone().addListener(object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition?) {
+                (animator as ObjectAnimator?)?.reverse()
+                transition?.removeListener(this)
+            }
+
+            override fun onTransitionResume(transition: Transition?) = Unit
+
+            override fun onTransitionPause(transition: Transition?) = Unit
+
+            override fun onTransitionCancel(transition: Transition?) = Unit
+
+            override fun onTransitionStart(transition: Transition?) = Unit
+
+        })
     }
 }
 

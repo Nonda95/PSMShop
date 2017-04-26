@@ -17,7 +17,7 @@ import pl.edu.pwr.wiz.psmshop.view.DetailsView
  */
 class DetailsPresenter(private val detailsProvider: DetailsProvider = DetailsProvider(), private val categoriesProvider: CategoriesProvider = CategoriesProvider(), private val carouselItemProvider: CarouselItemProvider = CarouselItemProvider()) : BaseMVPPresenter<DetailsView> {
     var view: DetailsView? = null
-    var album : Album? = null
+    var album: Album? = null
     var task: Job? = null
     override fun attachView(v: DetailsView) {
         view = v
@@ -49,10 +49,6 @@ class DetailsPresenter(private val detailsProvider: DetailsProvider = DetailsPro
                 view?.showRelatedAlbums(it)
             }
         }
-    }
-
-    fun onCarouselItemClick(id: Int) {
-        view?.showDetails(id)
     }
 
     fun onPlayPauseClick(isPlaying: Boolean) {

@@ -7,6 +7,5 @@ import pl.edu.pwr.wiz.psmshop.model.CarouselItem
  */
 interface MainView {
     fun displayCarousels(carouselsData: Map<String ,List<CarouselItem>>)
-    fun showDetails(id: Int)
 }
 

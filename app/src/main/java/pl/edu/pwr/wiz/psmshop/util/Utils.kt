@@ -34,6 +34,10 @@ fun ImageView.load(url: String, afterLoad: () -> Unit = {}): Unit {
             .into(this)
 }
 
+fun Context.prefetch(url: String): Unit {
+    Glide.with(this)
+}
+
 fun Context.getWindowMetrics(): DisplayMetrics {
     val dm = DisplayMetrics()
     (this.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(dm)

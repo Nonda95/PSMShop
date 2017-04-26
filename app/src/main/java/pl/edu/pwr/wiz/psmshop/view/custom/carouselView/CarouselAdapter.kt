@@ -1,5 +1,6 @@
 package pl.edu.pwr.wiz.psmshop.view.custom.carouselView
 
+import android.animation.ObjectAnimator
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -71,7 +72,8 @@ class CarouselAdapter(private val containerWidth: Int) : RecyclerView.Adapter<Ba
                 container_carousel_item.setOnClickListener {
                     val transitionName = UUID.randomUUID().toString()
                     iv_carousel_item_photo.transitionName = transitionName
-                    carouselItemClickListener?.invoke(itemId, iv_carousel_item_photo)
+
+                    carouselItemClickListener?.invoke(itemId, iv_carousel_item_photo, ObjectAnimator.ofInt(tv_carousel_item_title, "height", 0))
                 }
             }
         }

@@ -1,5 +1,6 @@
 package pl.edu.pwr.wiz.psmshop.view.custom.carouselView
 
+import android.animation.Animator
 import android.content.Context
 
 import android.support.v7.widget.LinearLayoutManager
@@ -12,7 +13,7 @@ import pl.edu.pwr.wiz.psmshop.util.getWindowMetrics
 import pl.edu.pwr.wiz.psmshop.view.custom.BaseCustomView
 import pl.edu.pwr.wiz.psmshop.view.custom.HorizontalSnapHelper
 
-typealias OnCarouselItemClickListener = (Int, View) -> Unit
+typealias OnCarouselItemClickListener = (Int, View, Animator?) -> Unit
 
 class CarouselView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : BaseCustomView(context, attrs, defStyle) {
 
